@@ -5,6 +5,7 @@ var stats = [];
 
 function stat_calc(){
 	fine = 0
+	stats = [];
 	while(fine != 3){
 	 stats.push(Math.ceil(Math.random()*6))
 		fine++}
@@ -45,7 +46,7 @@ function combat_encounter(){
 	let temp_array_hold = calculate_stat_usage(stats[0], stats[1], stats[2])
 
 	let enemy_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4], mana:temp_array_hold[5]}
-	console.log("your enemies stats are")
+	console.log("your " + "\x1b[41m" + "\x1b[5m" + "enemies" + "\x1b[0m" + " stats are")
 	console.log(enemy_stats)
 }
 
@@ -60,4 +61,4 @@ check_stats_enemy
 //dex = atkspd / dodge
 //con = hp / mana
 
-//TODO, ensure enemy and player stat gen is decoupled
+//TODO: make combat
