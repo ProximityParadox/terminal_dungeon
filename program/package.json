@@ -1,0 +1,17 @@
+{
+  "name": "crawlyboi",
+  "version": "1.0.0",
+  "description": "randomized character tries to dungeoncrawl",
+  "main": "./bin/index.js",
+  "bin": {
+    "crawlyboi": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "start"
+  },
+  "keywords": [
+    "dungeon"
+  ],
+  "author": "Nicolas",
+  "license": "MIT"
+}
