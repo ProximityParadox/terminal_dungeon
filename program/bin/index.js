@@ -24,17 +24,16 @@ function calculate_stat_usage(str, dex, con){
 	let dodge = dex*1
 
 	let hp = con*3
-	let mana = con*1
 
-temp_array_hold.push(dmg, regen, atkspd, dodge, hp, mana)
+temp_array_hold.push(dmg, regen, atkspd, dodge, hp)
 return temp_array_hold
 	
 }
 
 stat_calc()
 let temp_array_hold = calculate_stat_usage(stats[0], stats[1], stats[2])
-var player_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4], mana:temp_array_hold[5]}
-
+var player_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4]}
+var player_max_hp = player_stats.hp
 
 function Combat_Stat_Check(enemy_stats){
 	console.log("your stats are")
@@ -45,27 +44,102 @@ function Combat_Stat_Check(enemy_stats){
 
 
 
+
+function merchant(){
+	console.log("")
+	console.log("the" + "\x1b[33m" + " merchant " + "\x1b[0m" + "greets you warmly and shows you their wares")
+	console.log("")
+	console.log("a gleaming" + "\x1b[31m" + " sword " +  "\x1b[0m" + "shines brightly, a perfect replacement for your rusty old thing, 9 gold")
+	console.log("")
+	console.log("a pair of" + "\x1b[34m" + "\x1b[1m" + " shoes " +  "\x1b[0m" + " are proudly shown on the display, they would certaintly help your dodging skills, 4 gold")
+	console.log("")
+	console.log("you have " + player_global_gold_counter + " gold ")
+	console.log("")
+
+	purchase_items()
+}
+
+function back_to_town(){
+	console.log("")
+	let choice = prompt(" do you visit the merchant or head back to the dungeon? ")
+	console.log("")
+	if(choice == "merchant" || choice == "merc"){
+		merchant()
+	}
+	if(choice == "dungeon"){
+		combat_encounter()
+	}
+	else{
+		back_to_town()
+	}
+	
+}
+
+function purchase_items(){
+	let choice = prompt("which one do you buy? ")
+	
+	console.log("")
+
+	if(choice == "sword"){
+		if(player_global_gold_counter >= 9){
+			console.log("the sword feels heafty in your hands, you can certaintly make use of this")
+			player_stats.dmg = player_stats.dmg + 4
+			player_global_gold_counter = player_global_gold_counter-9
+		}
+		else{
+			console.log("you count your coins and realise you cannot afford it")
+			console.log("")
+		}
+	}
+	if(choice == "shoes"){
+		if(player_global_gold_counter >= 4){
+			console.log("You feel quite light in these shoes, perhaps you should try dancing")
+			player_stats.dodge = player_stats.dodge + 2
+			player_global_gold_counter = player_global_gold_counter-4
+		}
+		else{
+			console.log("you count your coins and realise you cannot afford it")
+			console.log("")
+		}
+	}
+	else{
+		console.log("you thank the merchant and return back to town ")
+		back_to_town()
+	}
+	purchase_items()
+}
+
 function choose_next_move(enemy_stats){	
 	console.log("")
 	let choice = prompt("what do you do? (Flee/Attack/Check) ")
 	if(choice == "flee"|| choice == "Flee"){
-		//todo, flee command
-	}
-	if(choice == "attack" || choice == "Attack"){
+		if(player_stats.dodge >= enemy_stats.atkspd*Math.random*2){
+			console.log("you manage to flee your foe")
+			back_to_town()
+		}
+		else{
+			console.log("the" + "\x1b[31m" + " fiend " +  "\x1b[0m" + "catches your attempt to flee, you quickly decide to change goal")
+			attack_enemy(enemy_stats, player_stats)
+			}
+		}
+	if(choice == "attack" || choice == "Attack" || choice == "atk"){
 		attack_enemy(enemy_stats, player_stats)
 	}
-	if(choice == "check" || choice == "Check"){
+	if(choice == "check" || choice == "Check" || choice == "chk"){
 		Combat_Stat_Check(enemy_stats)
 		choose_next_move(enemy_stats, player_stats)
 	}
+
 }
+
+
 
 function combat_encounter(){
 
 	
 	stat_calc()
 	let temp_array_hold = calculate_stat_usage(stats[0], stats[1], stats[2])
-	let enemy_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4], mana:temp_array_hold[5]}
+	let enemy_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4]}
 	
 	Combat_Stat_Check(enemy_stats)
 
@@ -80,7 +154,7 @@ function attack_enemy(enemy_stats){
 
 
 	if(enemy_stats.atkspd*Math.random() > player_stats.atkspd*Math.random()){
-		if((Math.random()*7)>player_stats.dodge){
+		if((Math.random()*10)>player_stats.dodge){
 			 player_stats.hp = player_stats.hp-enemy_stats.dmg
 			 console.log("")
 			 console.log("you enter the fray but the enemy strikes quickly and true, you take " + enemy_stats.dmg + "hp dmg")
@@ -96,14 +170,20 @@ function attack_enemy(enemy_stats){
 		}
 	}
 	else{
-		if((Math.random()*7)>enemy_stats.dodge){
+		if((Math.random()*10)>enemy_stats.dodge){
 			enemy_stats.hp = enemy_stats.hp-player_stats.dmg
 			console.log("")
-			console.log("you enter the fray and your enemy stumbles before the blade strikes deep, he takes " + player_stats.dmg + "hp dmg")
+			console.log("you enter the fray and your" + "\x1b[31m" + " enemy " +  "\x1b[0m" + "stumbles before the blade strikes deep, he takes " + player_stats.dmg + "hp dmg")
 
 			if(enemy_stats.hp-player_stats.dmg<0){
 				console.log("")
-				console.log("the fiend lays slain at your feet")
+				console.log("the" + "\x1b[31m" + " fiend " +  "\x1b[0m" + "lays slain at your feet")
+				console.log("")
+				let gold_from_encounter = Math.ceil(Math.random()*6)
+				player_global_gold_counter = player_global_gold_counter + gold_from_encounter
+				console.log("")
+				console.log("you find " + "\x1b[33m" + gold_from_encounter + " gold" + "\x1b[0m"  )
+				console.log("")
 				combat_finished_flag = 1
 			}
 		}
@@ -118,8 +198,10 @@ function attack_enemy(enemy_stats){
 	if(combat_finished_flag == 0){
 	choose_next_move(enemy_stats)
 }
-
 	else{
+		if(player_stats.hp > player_max_hp){
+			player_stats.hp = player_stats.hp + player_stats.regen
+		}
 		combat_finished_flag = 0
 		let choice = prompt("Continue exploring the dungeon or head back? (Cont/Back) ")
 		if(choice == "cont" || choice == "Cont"){
@@ -127,30 +209,22 @@ function attack_enemy(enemy_stats){
 			console.log("You tread the path deeper into the dungeon.")
 			console.log("You come across a roaring monstrosity guarding the next hallway")
 			console.log("")
-
 			combat_encounter()
 		}
 		if(choice == "back" || choice == "Back"){
 			combat_finished_flag = 0
-			if(player_stats.dodge>enemy_stats.atkspd*2){
+			console.log("")
 			console.log("you manage to escape back to town safely")
 			back_to_town()
 		}
 	}
 }
-}
 
-function back_to_town(enemy_stats){
 
-	let choice = prompt(" do you visit the merchant or head back to the dungeon?")
-	
-}
+console.log("you feel adventurous today, you decide you take your chances and begin your story as an adventurer")
 
-combat_encounter()
-//console.log(Math.random()*6)
+back_to_town()
 
-//console.log(player_stats)
-//console.log(calculate_stat_usage.apply(null, player_stats))
 
 //str = dmg / regen
 //dex = atkspd / dodge
@@ -158,6 +232,6 @@ combat_encounter()
 
 //TODO: decouple stat generation(x)
 //TODO: make combat (x)
-//TODO: implement flee mechanic()
-//TODO: implement town and gold mechanics ()
-
+//TODO: implement flee mechanic(x)
+//TODO: implement town and gold mechanics (x)
+//TODO: finalize the starting sequence (x)
