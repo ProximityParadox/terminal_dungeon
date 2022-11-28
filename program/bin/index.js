@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 
+import callmerchant from "./module.js";
+
+
 var player_global_gold_counter = 0
 let combat_finished_flag = 0
 var fine = 0
 var stats = [];
-const prompt = require("prompt-sync")();
+import PromptSync from "prompt-sync";
+const prompt = PromptSync();
 
 function stat_calc(){
 	fine = 0
@@ -44,8 +48,7 @@ function Combat_Stat_Check(enemy_stats){
 
 
 
-
-function merchant(){
+export default function merchant(){
 	console.log("")
 	console.log("the" + "\x1b[33m" + " merchant " + "\x1b[0m" + "greets you warmly and shows you their wares")
 	console.log("")
@@ -59,12 +62,13 @@ function merchant(){
 	purchase_items()
 }
 
+
 function back_to_town(){
 	console.log("")
 	let choice = prompt(" do you visit the merchant or head back to the dungeon? ")
 	console.log("")
 	if(choice == "merchant" || choice == "merc"){
-		merchant()
+		callmerchant()
 	}
 	if(choice == "dungeon"){
 		combat_encounter()

@@ -13,5 +13,6 @@
     "dungeon"
   ],
   "author": "Nicolas",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module"
 }
