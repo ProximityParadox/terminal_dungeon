@@ -5,23 +5,25 @@ import callmerchant from "./module.js";
 
 var player_global_gold_counter = 0
 let combat_finished_flag = 0
-var fine = 0
+var dicerollsdone = 0
 var stats = [];
 import PromptSync from "prompt-sync";
 const prompt = PromptSync();
 
+
+//rolls 3 numbers to be used as the str, con and dex stats. Then pushes to array to return as a single value
 function stat_calc(){
-	fine = 0
+	dicerollsdone = 0
 	stats = [];
-	while(fine != 3){
+	while(dicerollsdone != 3){
 	 stats.push(Math.ceil(Math.random()*6))
-		fine++}
+		dicerollsdone++}
 }
 
-
+//imports previously generated str, dex and con and then adjusts them per stat, makes a temporary array to return the resulting stats
 function calculate_stat_usage(str, dex, con){
 	let temp_array_hold = []
-	let dmg = str*3
+	let dmg = str*2
 	let regen = str*1
 
 	let atkspd = dex*2
@@ -33,12 +35,13 @@ temp_array_hold.push(dmg, regen, atkspd, dodge, hp)
 return temp_array_hold
 	
 }
-
+//calculating player stats outside of a function since they are persistent global variables that will only be created once per run of program. Keeps track of maxhp to allow regeneration during/after combat
 stat_calc()
 let temp_array_hold = calculate_stat_usage(stats[0], stats[1], stats[2])
 var player_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4]}
 var player_max_hp = player_stats.hp
 
+//simple function to allow the player to print out both player and enemy stats on request in combat, fancied up with a few exit codes
 function Combat_Stat_Check(enemy_stats){
 	console.log("your stats are")
 	console.log(player_stats)
@@ -47,7 +50,7 @@ function Combat_Stat_Check(enemy_stats){
 }
 
 
-
+//merchant describes the wares and then tells player gold. The actual purchasing of items is handled in the next function, called at the end of this one
 export default function merchant(){
 	console.log("")
 	console.log("the" + "\x1b[33m" + " merchant " + "\x1b[0m" + "greets you warmly and shows you their wares")
@@ -62,7 +65,7 @@ export default function merchant(){
 	purchase_items()
 }
 
-
+//crossroads to give some world building (i.e not teleporting from dungeon to merchant and then back)
 function back_to_town(){
 	console.log("")
 	let choice = prompt(" do you visit the merchant or head back to the dungeon? ")
@@ -156,17 +159,16 @@ function combat_encounter(){
 function attack_enemy(enemy_stats){
 	
 
-
 	if(enemy_stats.atkspd*Math.random() > player_stats.atkspd*Math.random()){
-		if((Math.random()*10)>player_stats.dodge){
+		if((Math.random()*6)>player_stats.dodge){
 			 player_stats.hp = player_stats.hp-enemy_stats.dmg
 			 console.log("")
 			 console.log("you enter the fray but the enemy strikes quickly and true, you take " + enemy_stats.dmg + "hp dmg")
-			 if(player_stats.hp-enemy_stats.dmg<0){
+			 if(player_stats.hp<0){
 				console.log("")
-				console.log("you " + "\x1b[41m" + "\x1b[5m" + "died" + "\x1b[0m" )}
+				console.log("you " + "\x1b[41m" + "\x1b[5m" + "died" + "\x1b[0m" )
 				combat_finished_flag = 1
-				process.exit()
+				process.exit()}
 		}
 		else{
 			console.log("")
@@ -174,12 +176,12 @@ function attack_enemy(enemy_stats){
 		}
 	}
 	else{
-		if((Math.random()*10)>enemy_stats.dodge){
+		if((Math.random()*6)>enemy_stats.dodge){
 			enemy_stats.hp = enemy_stats.hp-player_stats.dmg
 			console.log("")
 			console.log("you enter the fray and your" + "\x1b[31m" + " enemy " +  "\x1b[0m" + "stumbles before the blade strikes deep, he takes " + player_stats.dmg + "hp dmg")
 
-			if(enemy_stats.hp-player_stats.dmg<0){
+			if(enemy_stats.hp<0){
 				console.log("")
 				console.log("the" + "\x1b[31m" + " fiend " +  "\x1b[0m" + "lays slain at your feet")
 				console.log("")
@@ -203,7 +205,7 @@ function attack_enemy(enemy_stats){
 	choose_next_move(enemy_stats)
 }
 	else{
-		if(player_stats.hp > player_max_hp){
+		if(player_stats.hp < player_max_hp){
 			player_stats.hp = player_stats.hp + player_stats.regen
 		}
 		combat_finished_flag = 0
