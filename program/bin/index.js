@@ -2,11 +2,13 @@
 
 import callmerchant from "./module.js";
 
-
+//global variables
 var player_global_gold_counter = 0
 let combat_finished_flag = 0
 var dicerollsdone = 0
 var stats = [];
+
+//improt promptsync to allow for user interaction
 import PromptSync from "prompt-sync";
 const prompt = PromptSync();
 
@@ -82,6 +84,8 @@ function back_to_town(){
 	
 }
 
+
+// some flavour text and then a quick check vs the player_global_gold_counter to then increment stats, if in a failure state then return to town
 function purchase_items(){
 	let choice = prompt("which one do you buy? ")
 	
@@ -116,11 +120,14 @@ function purchase_items(){
 	purchase_items()
 }
 
+
+//allows the player to choose their next move in combat, which is either fight or flee (with the option to compare stats again if the player forgot). If the player attemps to flee then it checks if the player dodge chance is greater than the atkspeed of the enemy (times 1.5 to account for the starting difference between dodge and atkspeed.
+//in a player-generated failure state it restarts the function
 function choose_next_move(enemy_stats){	
 	console.log("")
 	let choice = prompt("what do you do? (Flee/Attack/Check) ")
 	if(choice == "flee"|| choice == "Flee"){
-		if(player_stats.dodge >= enemy_stats.atkspd*Math.random*2){
+		if(player_stats.dodge >= (enemy_stats.atkspd*Math.random()*1.5)){
 			console.log("you manage to flee your foe")
 			back_to_town()
 		}
@@ -136,11 +143,14 @@ function choose_next_move(enemy_stats){
 		Combat_Stat_Check(enemy_stats)
 		choose_next_move(enemy_stats, player_stats)
 	}
+	else{
+		choose_next_move(enemy_stats)
+	}
 
 }
 
 
-
+//calculates the enemy stats and saves them in a local variable that gets passed to combat stating function (combat_stat_check + choose_next_move)
 function combat_encounter(){
 
 	
@@ -155,33 +165,38 @@ function combat_encounter(){
 	
 	
 }
-
+//general combat loop
 function attack_enemy(enemy_stats){
 	
-
+//checks attackspeeds to determine who attacks first
 	if(enemy_stats.atkspd*Math.random() > player_stats.atkspd*Math.random()){
-		if((Math.random()*6)>player_stats.dodge){
+		//calculating dodge chance + combat dmg
+		if((Math.random()*5)<player_stats.dodge){
 			 player_stats.hp = player_stats.hp-enemy_stats.dmg
 			 console.log("")
 			 console.log("you enter the fray but the enemy strikes quickly and true, you take " + enemy_stats.dmg + "hp dmg")
-			 if(player_stats.hp<0){
+			 //exit state upon player death
+			 if(player_stats.hp<=0){
 				console.log("")
 				console.log("you " + "\x1b[41m" + "\x1b[5m" + "died" + "\x1b[0m" )
 				combat_finished_flag = 1
 				process.exit()}
 		}
+		//dodge fluff
 		else{
 			console.log("")
 			console.log("you enter the fray but the enemy strikes quickly, you barely manage to get out of range from the sweeping blade")
 		}
 	}
 	else{
-		if((Math.random()*6)>enemy_stats.dodge){
+		//if the player manages to dodge it goes on check dodge vs enemy
+		if((Math.random()*5)<enemy_stats.dodge){
 			enemy_stats.hp = enemy_stats.hp-player_stats.dmg
 			console.log("")
 			console.log("you enter the fray and your" + "\x1b[31m" + " enemy " +  "\x1b[0m" + "stumbles before the blade strikes deep, he takes " + player_stats.dmg + "hp dmg")
-
-			if(enemy_stats.hp<0){
+			
+			//if enemy dies then increment gold by random (1-6) amount.
+			if(enemy_stats.hp<=0){
 				console.log("")
 				console.log("the" + "\x1b[31m" + " fiend " +  "\x1b[0m" + "lays slain at your feet")
 				console.log("")
@@ -193,6 +208,7 @@ function attack_enemy(enemy_stats){
 				combat_finished_flag = 1
 			}
 		}
+		//dodge fluff
 		else{
 			console.log("")
 			console.log("you enter the fray but the ellusive enemy manages to gracefully dodge away")
@@ -200,7 +216,7 @@ function attack_enemy(enemy_stats){
 	}
 
 
-
+// if combat hasn't finished by player or enemy death it loops to choose next move (to allow the player the attempt to flee if combat goes badly)
 	if(combat_finished_flag == 0){
 	choose_next_move(enemy_stats)
 }
@@ -226,9 +242,9 @@ function attack_enemy(enemy_stats){
 	}
 }
 
-
+//one time worldbuilding
 console.log("you feel adventurous today, you decide you take your chances and begin your story as an adventurer")
-
+//start adventure
 back_to_town()
 
 
