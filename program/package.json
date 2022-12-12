@@ -7,12 +7,17 @@
     "crawlyboi": "./bin/index.js"
   },
   "scripts": {
-    "test": "start"
+    "test": "node_modules/.bin/mocha"
   },
   "keywords": [
     "dungeon"
   ],
+
   "author": "Nicolas",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
+  }
 }

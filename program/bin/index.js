@@ -22,8 +22,13 @@ function stat_calc(){
 		dicerollsdone++}
 }
 
+//str = dmg / regen
+//dex = atkspd / dodge
+//con = hp / mana
+
+
 //imports previously generated str, dex and con and then adjusts them per stat, makes a temporary array to return the resulting stats
-function calculate_stat_usage(str, dex, con){
+export function calculate_stat_usage(str, dex, con){
 	let temp_array_hold = []
 	let dmg = str*2
 	let regen = str*1
@@ -43,7 +48,7 @@ let temp_array_hold = calculate_stat_usage(stats[0], stats[1], stats[2])
 var player_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:temp_array_hold[2], dodge:temp_array_hold[3], hp:temp_array_hold[4]}
 var player_max_hp = player_stats.hp
 
-//simple function to allow the player to print out both player and enemy stats on request in combat, fancied up with a few exit codes
+//simple function to allow the player to print out both player and enemy stats on request in combat, fancied up with a few codes
 function Combat_Stat_Check(enemy_stats){
 	console.log("your stats are")
 	console.log(player_stats)
@@ -70,7 +75,7 @@ export default function merchant(){
 //crossroads to give some world building (i.e not teleporting from dungeon to merchant and then back)
 function back_to_town(){
 	console.log("")
-	let choice = prompt(" do you visit the merchant or head back to the dungeon? ")
+	let choice = prompt(" do you visit the merchant or head back to the" + "\x1b[31m" + " dungeon " +  "\x1b[0m" + "?")
 	console.log("")
 	if(choice == "merchant" || choice == "merc"){
 		callmerchant()
@@ -189,13 +194,13 @@ function attack_enemy(enemy_stats){
 		}
 	}
 	else{
-		//if the player manages to dodge it goes on check dodge vs enemy
+		//if the player manages to dodge, or has greater attackspeed, it goes on check dodge vs enemy
 		if((Math.random()*5)<enemy_stats.dodge){
 			enemy_stats.hp = enemy_stats.hp-player_stats.dmg
 			console.log("")
 			console.log("you enter the fray and your" + "\x1b[31m" + " enemy " +  "\x1b[0m" + "stumbles before the blade strikes deep, he takes " + player_stats.dmg + "hp dmg")
 			
-			//if enemy dies then increment gold by random (1-6) amount.
+			//if enemy dies then increment gold by random (1-6) amount, flag combat as finished.
 			if(enemy_stats.hp<=0){
 				console.log("")
 				console.log("the" + "\x1b[31m" + " fiend " +  "\x1b[0m" + "lays slain at your feet")
@@ -243,17 +248,9 @@ function attack_enemy(enemy_stats){
 }
 
 //one time worldbuilding
-console.log("you feel adventurous today, you decide you take your chances and begin your story as an adventurer")
+//console.log("you feel adventurous today, you decide you take your chances and begin your story as an adventurer")
 //start adventure
-back_to_town()
+//back_to_town()
 
 
-//str = dmg / regen
-//dex = atkspd / dodge
-//con = hp / mana
 
-//TODO: decouple stat generation(x)
-//TODO: make combat (x)
-//TODO: implement flee mechanic(x)
-//TODO: implement town and gold mechanics (x)
-//TODO: finalize the starting sequence (x)
