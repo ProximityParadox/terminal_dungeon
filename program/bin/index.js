@@ -14,12 +14,13 @@ const prompt = PromptSync();
 
 
 //rolls 3 numbers to be used as the str, con and dex stats. Then pushes to array to return as a single value
-function stat_calc(){
+export function stat_calc(){
 	dicerollsdone = 0
 	stats = [];
 	while(dicerollsdone != 3){
 	 stats.push(Math.ceil(Math.random()*6))
 		dicerollsdone++}
+	return stats
 }
 
 //str = dmg / regen
@@ -49,7 +50,7 @@ var player_stats = {dmg:temp_array_hold[0], regen:temp_array_hold[1], atkspd:tem
 var player_max_hp = player_stats.hp
 
 //simple function to allow the player to print out both player and enemy stats on request in combat, fancied up with a few codes
-function Combat_Stat_Check(enemy_stats){
+export function Combat_Stat_Check(enemy_stats){
 	console.log("your stats are")
 	console.log(player_stats)
 	console.log("your " + "\x1b[41m" + "\x1b[5m" + "enemies" + "\x1b[0m" + " stats are")
@@ -248,7 +249,7 @@ function attack_enemy(enemy_stats){
 }
 
 //one time worldbuilding
-//console.log("you feel adventurous today, you decide you take your chances and begin your story as an adventurer")
+console.log("you feel adventurous today, you decide you take your chances and begin your story as an adventurer")
 //start adventure
 //back_to_town()
 
