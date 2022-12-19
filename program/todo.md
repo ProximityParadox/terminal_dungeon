@@ -1,6 +1,0 @@
-//TODO: - ! create stat generation mechanic (x)
-//TODO: - ! decouple stat generation (x)
-//TODO: - ! make combat (x)
-//TODO: - ! implement flee mechanic (x)
-//TODO: - ! implement town and gold mechanics (x)
-//TODO: - ! finalize the starting sequence (x)
