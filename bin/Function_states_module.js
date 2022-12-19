@@ -209,30 +209,33 @@ export function attack_enemy(enemy_stats){
 
 
 // if combat hasn't finished by player or enemy death it loops to choose next move (to allow the player the attempt to flee if combat goes badly)
-	if(combat_finished_flag == 0){
-	choose_next_move(enemy_stats)
+	combat_end(enemy_stats)
 }
-	else{
-		if(player_stats.hp < player_max_hp){
-			player_stats.hp = player_stats.hp + player_stats.regen
-		}
-		let choice = prompt("Continue exploring the dungeon or head back? (Cont/Back) ")
-		if(choice == "cont" || choice == "Cont"){
-			combat_finished_flag = 0
-			console.log("")
-			console.log("You tread the path deeper into the dungeon.")
-			console.log("You come across a roaring monstrosity guarding the next hallway")
-			console.log("")
-			combat_encounter()
-		}
-		if(choice == "back" || choice == "Back"){
-			combat_finished_flag = 0
-			console.log("")
-			console.log("you manage to escape back to town safely")
-			back_to_town()
-		}
+
+
+function combat_end(enemy_stats){
+	if(combat_finished_flag === 0){
+		choose_next_move(enemy_stats)
 	}
+		if(combat_finished_flag === 1){
+			if(player_stats.hp < player_max_hp){
+				player_stats.hp = player_stats.hp + player_stats.regen
+			}
+			let choice = prompt("Continue exploring the dungeon or head back? (Cont/Back) ")
+			if(choice == "cont" || choice == "Cont"){
+				combat_finished_flag = 0
+				console.log("")
+				console.log("You tread the path deeper into the dungeon.")
+				console.log("You come across a roaring monstrosity guarding the next hallway")
+				console.log("")
+				combat_encounter()
+			}
+			if(choice == "back" || choice == "Back"){
+				combat_finished_flag = 0
+				console.log("")
+				console.log("you manage to escape back to town safely")
+				back_to_town()
+			}
+			else(combat_end(enemy_stats))
+		}
 }
-
-
-
