@@ -62,7 +62,7 @@ export function merchant(){
 //crossroads to give some world building (i.e not teleporting from dungeon to merchant and then back)
 export function back_to_town(){
 	console.log("")
-	let choice = prompt(" do you visit the merchant or head back to the" + "\x1b[31m" + " dungeon " +  "\x1b[0m" + "?")
+	let choice = prompt(" do you visit the merchant or head back to the" + "\x1b[31m" + " dungeon" +  "\x1b[0m" + "? ")
 	console.log("")
 	if(choice == "merchant" || choice == "merc"){
 		merchant()

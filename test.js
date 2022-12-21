@@ -37,3 +37,5 @@ describe("#calculates basic str, con and dex stats into game values like dmg", f
       expect(calculate_stat_usage(calc_live[0], calc_live[1], calc_live[2])).deep.to.equal([(calc_live[0]*2), (calc_live[0]*1), (calc_live[1]*2), (calc_live[1]*1), (calc_live[2]*3)])
     })
  })
+
+
