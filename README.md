@@ -3,7 +3,7 @@ För att installera och köra programmet:
 2. Ladda ner nodejs + npm genom packethanterare
 3. CDa in i mappen genom terminalen
 4. Skriv "npm install" och vänta tills alla paket är installerade
-5. Skriv "node ." eller npm start
+5. Skriv "node ." eller "npm start"
 
 För att testa programmet:
 1. Skriv "npm test"
