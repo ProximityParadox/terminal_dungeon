@@ -9,8 +9,3 @@
 //TODO: - ! Dokumentera även calculate_stat_usage med tsDoc style.(x)
 //TODO: - ! Fixa bug som gör att testning inte fungerar med att köra programmet.(x)
 //TODO (OPTIONAL): - sinon-chai to test console output ()
-
-
-
-~- Byt namn på "bin" mappen, t.ex. till "src"!~ i will not
-~- Förslag: Konvertera projekt till mallen och använd ts.~ i will not
