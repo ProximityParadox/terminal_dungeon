@@ -9,3 +9,4 @@
 //TODO: - ! Dokumentera även calculate_stat_usage med tsDoc style.(x)
 //TODO: - ! Fixa bug som gör att testning inte fungerar med att köra programmet.(x)
 //TODO (OPTIONAL): - sinon-chai to test console output ()
+

@@ -64,10 +64,10 @@ export function back_to_town(){
 	console.log("")
 	let choice = prompt(" do you visit the merchant or head back to the" + "\x1b[31m" + " dungeon" +  "\x1b[0m" + "? ")
 	console.log("")
-	if(choice == "merchant" || choice == "merc"){
+	if(choice == "merchant" || choice == "merc" || choice == "1"){
 		merchant()
 	}
-	if(choice == "dungeon"){
+	if(choice == "dungeon" || choice == "2"){
 		combat_encounter()
 	}
 	else{
@@ -128,10 +128,10 @@ export function choose_next_move(enemy_stats){
 			attack_enemy(enemy_stats, player_stats)
 			}
 		}
-	if(choice == "attack" || choice == "Attack" || choice == "atk"){
+	if(choice == "attack" || choice == "Attack" || choice == "atk" || choice == "1"){
 		attack_enemy(enemy_stats, player_stats)
 	}
-	if(choice == "check" || choice == "Check" || choice == "chk"){
+	if(choice == "check" || choice == "Check" || choice == "chk" || choice == "2"){
 		Combat_Stat_Check(enemy_stats)
 		choose_next_move(enemy_stats, player_stats)
 	}
